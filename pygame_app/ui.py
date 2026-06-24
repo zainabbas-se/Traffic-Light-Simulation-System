@@ -8,7 +8,7 @@ import math
 
 import pygame
 
-from .simulation import (
+from simulation import (
     CAR_LANE_Y,
     CROSSWALK_X0,
     CROSSWALK_X1,

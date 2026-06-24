@@ -1,10 +1,6 @@
-"""
-Traffic simulation system entry point.
+"""Entry point for the Pygame traffic simulation."""
 
-Run with: python main.py
-"""
-
-from traffic_simulation_system.app import main
+from app import main
 
 
 if __name__ == "__main__":

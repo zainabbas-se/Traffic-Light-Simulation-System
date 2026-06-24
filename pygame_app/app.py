@@ -8,8 +8,8 @@ import sys
 
 import pygame
 
-from .simulation import H, TrafficSimulation, W
-from .ui import draw_hud, draw_scene
+from simulation import H, TrafficSimulation, W
+from ui import draw_hud, draw_scene
 
 MAX_RUNTIME_SEC = 60.0
 
