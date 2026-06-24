@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "traffic-simulation-system-pygame"
+version = "1.0.0"
+description = "Desktop Pygame traffic light intersection simulation with cars and pedestrians."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pygame>=2.5.0"]
+
+[tool.setuptools]
+py-modules = ["app", "main", "simulation", "ui"]
