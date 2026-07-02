@@ -13,6 +13,7 @@ from ui_components import (
     render_card_header,
     render_header,
     render_kpis,
+    render_petri_net_diagram,
     render_traffic_light,
 )
 from utils import get_engine, set_last_tick_now, should_auto_step
@@ -49,7 +50,12 @@ st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
 render_kpis(marking, current_light)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Row 3: live signal visualization and event feed.
+# Row 3: Petri net structure and current marking.
+st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
+render_petri_net_diagram(engine.net)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Row 4: live signal visualization and event feed.
 st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
 traffic_column, log_column = st.columns([0.9, 1.35], gap="large")
 
@@ -60,7 +66,7 @@ with log_column:
     render_activity_card(list(engine.net.event_log))
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Row 4: controls.
+# Row 5: controls.
 st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
 with st.container(border=True):
     render_card_header("Control Panel")

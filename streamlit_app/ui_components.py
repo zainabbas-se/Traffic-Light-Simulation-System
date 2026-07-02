@@ -6,6 +6,9 @@ import html
 
 import streamlit as st
 
+from diagram import build_figure
+from petri_net import PetriNet
+
 LIGHT_COLORS = {
     "Red": "#ef4444",
     "Yellow": "#facc15",
@@ -533,6 +536,14 @@ def render_traffic_light(current_light: str) -> None:
         "</div>",
         unsafe_allow_html=True,
     )
+
+
+def render_petri_net_diagram(net: PetriNet) -> None:
+    """Render the live Petri net graph with the current token marking."""
+    with st.container(border=True):
+        render_card_header("Petri Net Diagram")
+        fig = build_figure(net)
+        st.pyplot(fig, clear_figure=True, use_container_width=True)
 
 
 def render_activity_card(entries: list[str]) -> None:
