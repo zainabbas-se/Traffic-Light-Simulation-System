@@ -6,6 +6,13 @@ import time
 
 import streamlit as st
 
+from ui_components import (
+    inject_styles,
+    render_header,
+    render_kpis,
+    render_petri_net_diagram,
+    render_sidebar,
+)
 from utils import get_cycle_speed, get_engine, get_rerun_poll_seconds, set_last_tick_now, should_auto_step
 
 
