@@ -21,10 +21,6 @@ ICON_CAR = "&#128663;"
 ICON_CHECK = "&#9989;"
 ICON_PEDESTRIAN = "&#128694;"
 ICON_LIGHT = "&#128678;"
-ICON_GREEN = "&#128994;"
-ICON_YELLOW = "&#128993;"
-ICON_RED = "&#128308;"
-ICON_GEAR = "&#9881;"
 
 
 def inject_styles() -> None:
@@ -261,77 +257,6 @@ html, body, .stApp {
     box-shadow: 0 0 14px var(--active-color);
 }
 
-.activity-log {
-    flex: 1;
-    min-height: 0;
-    max-height: none;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 4px;
-    width: 100%;
-    max-width: 100%;
-}
-
-.activity-card {
-    display: flex;
-    flex-direction: column;
-}
-
-.event-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 11px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #f8fafc;
-    margin-bottom: 8px;
-}
-
-.event-row.latest {
-    background: #ecfeff;
-    border-color: #67e8f9;
-    box-shadow: 0 8px 18px rgba(6, 182, 212, 0.12);
-}
-
-.event-badge {
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    flex: 0 0 auto;
-}
-
-.event-text {
-    color: #0f172a;
-    font-size: 0.9rem;
-    font-weight: 800;
-    line-height: 1.35;
-    overflow-wrap: anywhere;
-}
-
-.event-meta {
-    color: #64748b;
-    font-size: 0.74rem;
-    font-weight: 800;
-    margin-top: 2px;
-}
-
-.empty-log {
-    border: 1px dashed #cbd5e1;
-    border-radius: 8px;
-    color: #64748b;
-    padding: 24px;
-    text-align: center;
-    background: #f8fafc;
-    flex: 1;
-    display: grid;
-    place-items: center;
-}
-
 div.stButton > button {
     width: 100%;
     max-width: 100%;
@@ -411,11 +336,6 @@ div.stButton > button:focus:not(:active) {
 
     .dashboard-card {
         padding: 18px;
-    }
-
-    .activity-card .activity-log {
-        max-height: 18rem;
-        min-height: 12rem;
     }
 
     .traffic-card-inner {
@@ -605,66 +525,3 @@ def render_petri_net_diagram(net: PetriNet) -> None:
         render_card_header("Petri Net Diagram")
         fig = build_figure(net)
         st.pyplot(fig, clear_figure=True, use_container_width=True)
-
-
-def render_activity_card(entries: list[str]) -> None:
-    """Render the activity log in a fixed-height card with internal scroll."""
-    st.markdown(
-        '<div class="dashboard-card top-row-card activity-card">'
-        '<div class="section-title">Activity Log</div>'
-        '<div class="section-subtitle">'
-        "Latest transition and user action events"
-        "</div>"
-        f"{activity_log_html(entries)}"
-        "</div>",
-        unsafe_allow_html=True,
-    )
-
-
-
-def activity_log_html(entries: list[str]) -> str:
-    """Build the activity log markup."""
-    if not entries:
-        return (
-            '<div class="activity-log">'
-            '<div class="empty-log">'
-            "No events yet. Use the controls or start the simulation."
-            "</div>"
-            "</div>"
-        )
-
-    rows = []
-    for index, entry in enumerate(entries[:30]):
-        safe_entry = html.escape(entry)
-        latest_class = " latest" if index == 0 else ""
-        icon = event_icon(entry)
-        label = "Latest event" if index == 0 else "Event"
-        rows.append(
-            f'<div class="event-row{latest_class}">'
-            f'<div class="event-badge">{icon}</div>'
-            "<div>"
-            f'<div class="event-text">{safe_entry}</div>'
-            f'<div class="event-meta">{label}</div>'
-            "</div>"
-            "</div>"
-        )
-
-    return f'<div class="activity-log">{"".join(rows)}</div>'
-
-
-def event_icon(entry: str) -> str:
-    """Return a compact visual badge for a log event."""
-    lowered = entry.lower()
-    if "car" in lowered:
-        return ICON_CAR
-    if "pedestrian" in lowered:
-        return ICON_PEDESTRIAN
-    if "green" in lowered:
-        return ICON_GREEN
-    if "yellow" in lowered:
-        return ICON_YELLOW
-    if "red" in lowered:
-        return ICON_RED
-    if "exec" in lowered:
-        return ICON_GEAR
-    return "&bull;"

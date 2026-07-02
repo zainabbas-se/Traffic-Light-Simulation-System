@@ -9,7 +9,6 @@ import streamlit as st
 from simulation_engine import AUTO_STEP_INTERVAL_SECONDS
 from ui_components import (
     inject_styles,
-    render_activity_card,
     render_header,
     render_kpis,
     render_petri_net_diagram,
@@ -57,11 +56,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 # Row 3: Petri net structure and current marking.
 st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
 render_petri_net_diagram(engine.net)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# Row 4: event feed.
-st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
-render_activity_card(list(engine.net.event_log))
 st.markdown("</div>", unsafe_allow_html=True)
 
 if engine.is_running or engine.pending_pedestrian_exit_at is not None:
