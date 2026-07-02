@@ -680,20 +680,20 @@ def render_sidebar(engine: SimulationEngine, current_light: str) -> None:
         render_card_header("Control Panel")
         render_cycle_speed_control()
 
-        if st.button("Add Car", use_container_width=True):
+        if st.button("Add Car", width="stretch"):
             engine.add_car()
             st.rerun()
 
-        if st.button("Pedestrian Request", use_container_width=True):
+        if st.button("Pedestrian Request", width="stretch"):
             engine.request_pedestrian()
             st.rerun()
 
-        if st.button("Reset Simulation", use_container_width=True):
+        if st.button("Reset Simulation", width="stretch"):
             engine.reset()
             set_last_tick_now()
             st.rerun()
 
-        if st.button("Start Simulation", use_container_width=True):
+        if st.button("Start Simulation", width="stretch"):
             engine.is_running = True
             set_last_tick_now()
             st.rerun()
