@@ -6,11 +6,12 @@ import time
 
 import streamlit as st
 
-from simulation_engine import SimulationEngine
+from simulation_engine import AUTO_STEP_INTERVAL_SECONDS, SimulationEngine
 
 
 ENGINE_KEY = "traffic_engine"
 LAST_TICK_KEY = "last_auto_tick"
+CYCLE_SPEED_KEY = "cycle_speed_seconds"
 
 
 def get_engine() -> SimulationEngine:
@@ -18,6 +19,18 @@ def get_engine() -> SimulationEngine:
     if ENGINE_KEY not in st.session_state:
         st.session_state[ENGINE_KEY] = SimulationEngine()
     return st.session_state[ENGINE_KEY]
+
+
+def get_cycle_speed() -> float:
+    """Return the seconds between automatic simulation steps."""
+    return float(
+        st.session_state.get(CYCLE_SPEED_KEY, AUTO_STEP_INTERVAL_SECONDS)
+    )
+
+
+def get_rerun_poll_seconds() -> float:
+    """Poll often enough to hit the chosen cycle speed without busy-waiting."""
+    return max(0.1, min(get_cycle_speed() / 4, 0.5))
 
 
 def set_last_tick_now() -> None:
