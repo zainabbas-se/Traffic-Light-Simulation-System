@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import html
+import io
 
+import matplotlib.pyplot as plt
 import streamlit as st
 
 from diagram import build_figure
@@ -702,4 +704,13 @@ def render_petri_net_diagram(net: PetriNet) -> None:
     with st.container(border=True):
         render_card_header("Petri Net Diagram")
         fig = build_figure(net)
-        st.pyplot(fig, clear_figure=True, use_container_width=True)
+        buffer = io.BytesIO()
+        fig.savefig(
+            buffer,
+            format="png",
+            dpi=130,
+            bbox_inches="tight",
+            facecolor=fig.get_facecolor(),
+        )
+        plt.close(fig)
+        st.image(buffer.getvalue(), width="stretch")
