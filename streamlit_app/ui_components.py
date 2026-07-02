@@ -8,6 +8,8 @@ import streamlit as st
 
 from diagram import build_figure
 from petri_net import PetriNet
+from simulation_engine import AUTO_STEP_INTERVAL_SECONDS, SimulationEngine
+from utils import CYCLE_SPEED_KEY, set_last_tick_now
 
 LIGHT_COLORS = {
     "Red": "#ef4444",
@@ -505,8 +507,8 @@ def render_kpis(marking: dict[str, int], current_light: str) -> None:
     )
 
 
-def render_traffic_light(current_light: str) -> None:
-    """Render a CSS traffic light with the active lamp glowing."""
+def _traffic_light_inner_html(current_light: str) -> str:
+    """Build the traffic-light markup shared by main and sidebar views."""
     lamps = []
     for light in ("Red", "Yellow", "Green"):
         active_class = "active" if current_light == light else ""
@@ -520,9 +522,7 @@ def render_traffic_light(current_light: str) -> None:
         )
 
     active_color = LIGHT_COLORS.get(current_light, "#64748b")
-    st.markdown(
-        '<div class="dashboard-card top-row-card traffic-card">'
-        '<div class="section-title">Traffic Light</div>'
+    return (
         '<div class="traffic-card-inner">'
         "<div>"
         '<div class="traffic-cap"></div>'
@@ -530,12 +530,81 @@ def render_traffic_light(current_light: str) -> None:
         "</div>"
         f'<div class="traffic-status-pill" style="--active-color:{active_color};">'
         '<span class="status-dot"></span>'
-        f"Active light: {current_light}"
+        f"Active: {current_light}"
         "</div>"
         "</div>"
+    )
+
+
+def render_traffic_light(current_light: str, *, compact: bool = False) -> None:
+    """Render a CSS traffic light with the active lamp glowing."""
+    inner_html = _traffic_light_inner_html(current_light)
+
+    if compact:
+        st.markdown(
+            f'<div class="sidebar-traffic-body">{inner_html}</div>',
+            unsafe_allow_html=True,
+        )
+        return
+
+    st.markdown(
+        '<div class="dashboard-card top-row-card traffic-card">'
+        '<div class="section-title">Traffic Light</div>'
+        f"{inner_html}"
         "</div>",
         unsafe_allow_html=True,
     )
+
+
+def render_cycle_speed_control() -> None:
+    """Sidebar slider for automatic step pacing."""
+    if CYCLE_SPEED_KEY not in st.session_state:
+        st.session_state[CYCLE_SPEED_KEY] = AUTO_STEP_INTERVAL_SECONDS
+
+    st.slider(
+        "Cycle speed (seconds per step)",
+        min_value=0.5,
+        max_value=8.0,
+        step=0.1,
+        key=CYCLE_SPEED_KEY,
+        help="Time between each automatic step when the simulation is running.",
+    )
+
+
+def render_sidebar(engine: SimulationEngine, current_light: str) -> None:
+    """Render traffic light and controls in one sidebar card."""
+    with st.container(border=True):
+        render_card_header("Traffic Light")
+        render_traffic_light(current_light, compact=True)
+        st.divider()
+        render_card_header("Control Panel")
+        render_cycle_speed_control()
+
+        if st.button("Add Car", use_container_width=True):
+            engine.add_car()
+            st.rerun()
+
+        if st.button("Pedestrian Request", use_container_width=True):
+            engine.request_pedestrian()
+            st.rerun()
+
+        if st.button("Manual Step", use_container_width=True):
+            engine.run_step()
+            st.rerun()
+
+        if st.button("Reset Simulation", use_container_width=True):
+            engine.reset()
+            set_last_tick_now()
+            st.rerun()
+
+        if st.button("Start Simulation", use_container_width=True):
+            engine.is_running = True
+            set_last_tick_now()
+            st.rerun()
+
+        if st.button("Pause Simulation", use_container_width=True):
+            engine.is_running = False
+            st.rerun()
 
 
 def render_petri_net_diagram(net: PetriNet) -> None:
