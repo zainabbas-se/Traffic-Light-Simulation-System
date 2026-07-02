@@ -79,7 +79,6 @@ class SimulationEngine:
         self.cycle_index = 0
         self.is_running = False
         self.pending_pedestrian_exit_at = None
-
     def process_pending_pedestrian_exit(self) -> bool:
         """Complete a scheduled pedestrian crossing when its delay expires."""
         if self.pending_pedestrian_exit_at is None:

@@ -56,7 +56,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
 render_petri_net_diagram(engine.net)
 st.markdown("</div>", unsafe_allow_html=True)
-
 if engine.is_running or engine.pending_pedestrian_exit_at is not None:
     time.sleep(get_rerun_poll_seconds())
     st.rerun()
+
