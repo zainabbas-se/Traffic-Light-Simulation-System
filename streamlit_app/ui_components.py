@@ -588,10 +588,6 @@ def render_sidebar(engine: SimulationEngine, current_light: str) -> None:
             engine.request_pedestrian()
             st.rerun()
 
-        if st.button("Manual Step", use_container_width=True):
-            engine.run_step()
-            st.rerun()
-
         if st.button("Reset Simulation", use_container_width=True):
             engine.reset()
             set_last_tick_now()
@@ -600,10 +596,6 @@ def render_sidebar(engine: SimulationEngine, current_light: str) -> None:
         if st.button("Start Simulation", use_container_width=True):
             engine.is_running = True
             set_last_tick_now()
-            st.rerun()
-
-        if st.button("Pause Simulation", use_container_width=True):
-            engine.is_running = False
             st.rerun()
 
 
