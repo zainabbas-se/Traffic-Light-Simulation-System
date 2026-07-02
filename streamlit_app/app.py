@@ -6,15 +6,7 @@ import time
 
 import streamlit as st
 
-from simulation_engine import AUTO_STEP_INTERVAL_SECONDS
-from ui_components import (
-    inject_styles,
-    render_header,
-    render_kpis,
-    render_petri_net_diagram,
-    render_sidebar,
-)
-from utils import get_engine, set_last_tick_now, should_auto_step
+from utils import get_cycle_speed, get_engine, get_rerun_poll_seconds, set_last_tick_now, should_auto_step
 
 
 st.set_page_config(
@@ -34,7 +26,7 @@ if pedestrian_exit_completed:
 if (
     engine.is_running
     and not pedestrian_exit_completed
-    and should_auto_step(AUTO_STEP_INTERVAL_SECONDS)
+    and should_auto_step(get_cycle_speed())
 ):
     engine.run_step()
     set_last_tick_now()
@@ -59,5 +51,5 @@ render_petri_net_diagram(engine.net)
 st.markdown("</div>", unsafe_allow_html=True)
 
 if engine.is_running or engine.pending_pedestrian_exit_at is not None:
-    time.sleep(0.5)
+    time.sleep(get_rerun_poll_seconds())
     st.rerun()
