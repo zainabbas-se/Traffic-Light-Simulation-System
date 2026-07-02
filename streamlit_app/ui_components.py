@@ -51,9 +51,27 @@ html, body, .stApp {
 
 .block-container {
     padding-top: 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
     max-width: 78.75rem;
     width: 100%;
+}
+
+/* Keep main content below Streamlit's top toolbar (Deploy / menu bar). */
+header[data-testid="stHeader"] {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    z-index: 999;
+}
+
+div[data-testid="stDecoration"] {
+    display: none;
+}
+
+section[data-testid="stMain"] div.block-container,
+section.main div.block-container {
+    padding-top: 3.75rem !important;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .dashboard-header {
@@ -61,19 +79,22 @@ html, body, .stApp {
     color: #ffffff;
     border: 1px solid rgba(148, 163, 184, 0.28);
     border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    padding: 14px 18px;
+    margin: 0 0 16px 0;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
     width: 100%;
     max-width: 100%;
-    min-height: 5.5rem;
+    min-height: unset;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 1;
 }
 
 .dashboard-title {
-    font-size: 1.9rem;
-    line-height: 1.25;
+    font-size: clamp(1.2rem, 2vw, 1.65rem);
+    line-height: 1.35;
     font-weight: 800;
     margin: 0;
     padding: 0;
@@ -96,8 +117,8 @@ html, body, .stApp {
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 20px;
-    margin-bottom: 24px;
+    gap: 16px;
+    margin-bottom: 0;
     width: 100%;
     max-width: 100%;
 }
@@ -282,9 +303,161 @@ div.stButton > button:focus:not(:active) {
 }
 
 .dashboard-section {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     width: 100%;
     max-width: 100%;
+}
+
+.sidebar-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+section[data-testid="stSidebar"] {
+    min-width: 17rem;
+    max-width: 17rem;
+}
+
+section[data-testid="stSidebar"] > div {
+    padding-top: 0.35rem;
+    padding-bottom: 0.5rem;
+}
+
+section[data-testid="stSidebar"] .block-container {
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
+    padding-left: 0.65rem;
+    padding-right: 0.65rem;
+    width: 100%;
+}
+
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    gap: 0.85rem;
+    width: 100%;
+}
+
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
+    flex: 0 0 auto;
+}
+
+section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stVerticalBlockBorderWrapper"] {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    margin-top: 0 !important;
+    flex: 0 0 auto;
+}
+
+section[data-testid="stSidebar"] hr {
+    margin: 0.65rem 0 0.75rem 0;
+    border-color: #e2e8f0;
+}
+
+section[data-testid="stSidebar"] .sidebar-traffic-body {
+    margin-bottom: 0.15rem;
+}
+
+section[data-testid="stSidebar"] [data-testid="stVerticalBlockBorderWrapper"] .section-title {
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+}
+
+section[data-testid="stSidebar"] [data-testid="stVerticalBlockBorderWrapper"] .section-subtitle {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+}
+
+section[data-testid="stSidebar"] div.stButton {
+    margin: 0;
+}
+
+section[data-testid="stSidebar"] div.stButton > button {
+    min-height: 34px;
+    margin-bottom: 0;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+section[data-testid="stSidebar"] [data-testid="stSlider"] {
+    margin-bottom: 0.15rem;
+}
+
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+    overflow-y: auto;
+}
+
+section[data-testid="stSidebar"] .dashboard-card {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0 !important;
+    box-shadow: none;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex: 0 0 auto !important;
+}
+
+.sidebar-traffic-card {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 10px 12px;
+    margin-bottom: 0 !important;
+    overflow: visible;
+}
+
+.sidebar-traffic-card .traffic-card-inner {
+    gap: 8px;
+    flex: 0 0 auto;
+    min-height: 0;
+}
+
+.sidebar-traffic-card .section-title {
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+}
+
+.sidebar-traffic-body .traffic-card-inner {
+    gap: 8px;
+    flex: 0 0 auto;
+    min-height: 0;
+}
+
+.sidebar-traffic-body .traffic-shell {
+    width: 4.8rem;
+    padding: 0.45rem 0.4rem;
+    border-width: 4px;
+}
+
+.sidebar-traffic-body .traffic-cap {
+    width: 2.4rem;
+    height: 0.45rem;
+}
+
+.sidebar-traffic-body .lamp-pocket {
+    width: 3rem;
+    height: 3rem;
+    margin: 0.2rem auto;
+}
+
+.sidebar-traffic-body .lamp {
+    width: 2.15rem;
+    height: 2.15rem;
+    border-width: 2px;
+}
+
+.sidebar-traffic-body .traffic-status-pill {
+    font-size: 0.75rem;
+    padding: 4px 8px;
 }
 
 @media (min-width: 1200px) {
@@ -310,19 +483,24 @@ div.stButton > button:focus:not(:active) {
 }
 
 @media (max-width: 767px) {
+    section[data-testid="stMain"] div.block-container {
+        padding-top: 3.5rem !important;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
     .block-container {
         padding-left: 0.75rem;
         padding-right: 0.75rem;
     }
 
     .dashboard-header {
-        padding: 18px;
-        min-height: 4.75rem;
+        padding: 14px 16px;
     }
 
     .dashboard-title {
-        font-size: 1.35rem;
-        line-height: 1.3;
+        font-size: 1.2rem;
+        line-height: 1.35;
     }
 
     .kpi-grid {
