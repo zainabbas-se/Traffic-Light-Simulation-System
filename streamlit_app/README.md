@@ -1,20 +1,23 @@
 # Streamlit Traffic Simulation
 
-Web dashboard implementation of the Traffic Light Simulation System. It models an intersection with a Petri net and exposes controls, KPIs, live signal state, and an activity log through Streamlit.
+Web dashboard implementation of the Traffic Light Simulation System. It models an intersection with a Petri net and exposes controls, KPIs, a live traffic light, and a live Petri net diagram through Streamlit.
 
 ## Features
 
 - Petri net places, transitions, tokens, and firing rules
+- Live Petri net diagram with labeled transitions and current marking
 - Red -> green -> yellow -> red signal cycle
-- Add car and pedestrian request controls
-- Manual step, start, pause, and reset controls
+- Sidebar traffic light visualization with active lamp indicator
+- Add car, pedestrian request, reset, and start simulation controls
+- Configurable cycle speed (seconds per automatic step)
 - Streamlit session state for persistent simulation state
-- Responsive dashboard with traffic light visualization and event log
+- Responsive dashboard with KPI cards and sidebar control panel
 
 ## Requirements
 
 - Python 3.10 or newer
 - Streamlit 1.36.0 or newer
+- Matplotlib 3.8.0 or newer
 
 ## Setup
 
@@ -40,15 +43,22 @@ streamlit_app/
 |-- app.py
 |-- petri_net.py
 |-- simulation_engine.py
+|-- diagram.py
+|-- diagram_layout.py
 |-- ui_components.py
 |-- utils.py
 |-- requirements.txt
 `-- README.md
 ```
 
+## Dashboard Layout
+
+- **Sidebar**: traffic light, cycle speed slider, and simulation controls
+- **Main area**: project header, KPI cards, and Petri net diagram
+
 ## Simulation Priority
 
-Each automatic or manual step follows this order:
+Each automatic step follows this order:
 
 1. Complete a scheduled pedestrian crossing.
 2. Start pedestrian crossing when a pedestrian is waiting and the light is red.
